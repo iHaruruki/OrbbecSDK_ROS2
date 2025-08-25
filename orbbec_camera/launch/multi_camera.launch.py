@@ -12,11 +12,11 @@ def generate_launch_description():
     launch_file_dir = os.path.join(package_dir, 'launch')
     launch1_include = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(launch_file_dir, 'gemini_330_series.launch.py')
+            os.path.join(launch_file_dir, 'astra_stereo_u3.launch.py')
         ),
         launch_arguments={
             'camera_name': 'camera_01',
-            'usb_port': '2-1.1',
+            'usb_port': '2-3.2',
             'device_num': '2',
             'sync_mode': 'standalone'
         }.items()
@@ -24,11 +24,11 @@ def generate_launch_description():
 
     launch2_include = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(launch_file_dir, 'gemini_330_series.launch.py')
+            os.path.join(launch_file_dir, 'astra_stereo_u3.launch.py')
         ),
         launch_arguments={
             'camera_name': 'camera_02',
-            'usb_port': '2-1.2.1',
+            'usb_port': '4-2.2',
             'device_num': '2',
             'sync_mode': 'standalone'
         }.items()
