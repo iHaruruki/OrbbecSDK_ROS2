@@ -18,7 +18,7 @@ def generate_launch_description():
             'camera_name': 'camera_01',
             'usb_port': '2-3.2',
             'device_num': '2',
-            'sync_mode': 'standalone'
+            'sync_mode': 'software_triggering'
         }.items()
     )
 
@@ -30,7 +30,7 @@ def generate_launch_description():
             'camera_name': 'camera_02',
             'usb_port': '4-2.2',
             'device_num': '2',
-            'sync_mode': 'standalone'
+            'sync_mode': 'software_triggering'
         }.items()
     )
 
