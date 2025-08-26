@@ -1385,8 +1385,9 @@ void OBCameraNode::setupPublishers() {
       image_publishers_[stream_index] =
           std::make_shared<image_rcl_publisher>(*node_, topic, image_qos_profile);
     } else {
+      // Use only raw image publishers to avoid compressed transport plugin errors
       image_publishers_[stream_index] =
-          std::make_shared<image_transport_publisher>(*node_, topic, image_qos_profile);
+          std::make_shared<image_rcl_publisher>(*node_, topic, image_qos_profile);
     }
 
     topic = name + "/camera_info";
@@ -1410,7 +1411,8 @@ void OBCameraNode::setupPublishers() {
         color_undistortion_publisher_ = std::make_shared<image_rcl_publisher>(
             *node_, "color/image_undistorted", image_qos_profile);
       } else {
-        color_undistortion_publisher_ = std::make_shared<image_transport_publisher>(
+        // Use only raw image publishers to avoid compressed transport plugin errors
+        color_undistortion_publisher_ = std::make_shared<image_rcl_publisher>(
             *node_, "color/image_undistorted", image_qos_profile);
       }
     }
@@ -2166,12 +2168,31 @@ void OBCameraNode::onNewFrameCallback(const std::shared_ptr<ob::Frame> &frame,
   }
   sensor_msgs::msg::Image::UniquePtr image_msg(new sensor_msgs::msg::Image());
 
-  cv_bridge::CvImage(std_msgs::msg::Header(), encoding_[stream_index], image)
+  // Determine actual encoding from cv::Mat type to avoid mismatches
+  std::string actual_encoding = encoding_[stream_index];
+  size_t actual_unit_step = unit_step_size_[stream_index];
+  int cv_depth = image.depth();
+  int cv_channels = image.channels();
+  if (cv_depth == CV_8U && cv_channels == 3) {
+    actual_encoding = sensor_msgs::image_encodings::RGB8;
+    actual_unit_step = 3 * sizeof(uint8_t);
+  } else if (cv_depth == CV_8U && cv_channels == 1) {
+    actual_encoding = sensor_msgs::image_encodings::MONO8;
+    actual_unit_step = 1 * sizeof(uint8_t);
+  } else if (cv_depth == CV_16U && cv_channels == 1) {
+    actual_encoding = sensor_msgs::image_encodings::TYPE_16UC1;
+    actual_unit_step = 1 * sizeof(uint16_t);
+  } else if (cv_depth == CV_32F && cv_channels == 1) {
+    actual_encoding = sensor_msgs::image_encodings::TYPE_32FC1;
+    actual_unit_step = 1 * sizeof(float);
+  }
+
+  cv_bridge::CvImage(std_msgs::msg::Header(), actual_encoding, image)
       .toImageMsg(*image_msg);
   CHECK_NOTNULL(image_msg.get());
   image_msg->header.stamp = timestamp;
   image_msg->is_bigendian = false;
-  image_msg->step = width * unit_step_size_[stream_index];
+  image_msg->step = width * actual_unit_step;
   image_msg->header.frame_id = frame_id;
   CHECK(image_publishers_.count(stream_index) > 0);
   saveImageToFile(stream_index, image, *image_msg);

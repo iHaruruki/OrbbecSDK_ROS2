@@ -31,7 +31,7 @@ def generate_launch_description():
         DeclareLaunchArgument('color_width',  default_value='640'),
         DeclareLaunchArgument('color_height', default_value='480'),  # Astra supports this
         DeclareLaunchArgument('color_fps',    default_value='30'),
-        DeclareLaunchArgument('color_format', default_value='MJPG'),  # or RGB888
+        DeclareLaunchArgument('color_format', default_value='RGB888'),  # prefer uncompressed color encoding
         DeclareLaunchArgument('enable_color', default_value='true'),
         DeclareLaunchArgument('flip_color',   default_value='false'),
         DeclareLaunchArgument('color_qos', default_value='default'),
@@ -80,7 +80,7 @@ def generate_launch_description():
         DeclareLaunchArgument('soft_filter_speckle_size', default_value='-1'),
         DeclareLaunchArgument('use_hardware_time', default_value='false'),
         DeclareLaunchArgument('enable_depth_scale', default_value='true'),
-        DeclareLaunchArgument('align_mode', default_value='HW'),  # HW or SW
+        DeclareLaunchArgument('align_mode', default_value='SW'),  # HW or SW; SW avoids some HW conversion issues
         DeclareLaunchArgument('laser_energy_level', default_value='-1'),
         DeclareLaunchArgument('enable_heartbeat', default_value='false'),
     ]
