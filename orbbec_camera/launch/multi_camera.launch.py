@@ -16,9 +16,9 @@ def generate_launch_description():
         ),
         launch_arguments={
             'camera_name': 'camera_01',
-            'usb_port': '2-3.2',
+            'usb_port': '4-2.2',
             'device_num': '2',
-            'sync_mode': 'software_triggering'
+            'sync_mode': 'standalone'
         }.items()
     )
 
@@ -28,9 +28,9 @@ def generate_launch_description():
         ),
         launch_arguments={
             'camera_name': 'camera_02',
-            'usb_port': '4-2.2',
+            'usb_port': '2-1.2',
             'device_num': '2',
-            'sync_mode': 'software_triggering'
+            'sync_mode': 'standalone'
         }.items()
     )
 
