@@ -10,7 +10,7 @@ def generate_launch_description():
     # ---- Declare all arguments ----
     args = [
         DeclareLaunchArgument('camera_name', default_value='camera'),
-        DeclareLaunchArgument('depth_registration', default_value='false'),  # unused but keep
+        DeclareLaunchArgument('depth_registration', default_value='true'),  # unused but keep
         DeclareLaunchArgument('serial_number', default_value=''),
         DeclareLaunchArgument('usb_port', default_value=''),
         DeclareLaunchArgument('device_num', default_value='1'),

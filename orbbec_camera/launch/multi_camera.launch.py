@@ -1,3 +1,4 @@
+from sympy import true
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription, GroupAction, ExecuteProcess
 from launch.launch_description_sources import PythonLaunchDescriptionSource
@@ -16,9 +17,9 @@ def generate_launch_description():
         ),
         launch_arguments={
             'camera_name': 'camera_01',
-            'usb_port': '4-2.2',
+            'usb_port': '2-3.2',
             'device_num': '2',
-            'sync_mode': 'standalone'
+            'sync_mode': 'standalone',
         }.items()
     )
 
